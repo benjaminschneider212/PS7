@@ -15,7 +15,7 @@ march2018 <- read_csv("~/Documents/GitHub/PS7/March2018.CSV.html") #reading in t
 #2
 numcrimeperday <- march2018 %>% #subsetting by the different descriptions
   group_by(Description) %>% 
-  summarise(count=n()) 
+  summarise(count=n()) #breaking down the actual count of the crimes
 numcrimeperday #checking the output once the descriptions are extracted
 
 arrange(numcrimeperday, desc(count)) #organizing the descriptions by frequency
@@ -25,7 +25,7 @@ arrange(numcrimeperday, desc(count)) #organizing the descriptions by frequency
 #3
 numcrimeperneighborhood <- march2018 %>%  #subsetting the data by neighborhoof
   group_by(Neighborhood) %>% 
-  summarise(count=n())
+  summarise(count=n()) #breaking down the actual count of the crimes
 numcrimeperneighborhood #checking the data on neighborhood and number of crimes
 
 arrange(numcrimeperneighborhood , desc(count)) #organizing the data on the counts from high to low to see which neighborhoods have the highest crime
@@ -62,14 +62,14 @@ ggplot(date, aes(x=DateOccur, y=count)) + #this is just the shell of the plot to
 march2018$DateOccur<-as.Date(march2018$DateOccur,"%m/%d/%Y") #basically all of this is the same as above, but the filter is by district
 data_date<-arrange(march2018, march2018$DateOccur)
 date <- march2018 %>%
-  filter(DateOccur > as.Date("2018-3-1")) %>%
+  filter(DateOccur > as.Date("2018-3-1")) %>% #setting up the bounds through march 
   group_by(DateOccur,District) %>% #here is the part that is different by district
   summarise(count=n()) 
 
 ggplot(date, aes(x=DateOccur, y=count,group=(District))) + #setting up the plot based on the groupings by district
   geom_line(aes(color=factor(District)))+
   scale_color_manual(name="District",values=c('red', 'orange','yellow','green','blue','purple','violet'))+ #making sure it is colorful!
-  labs(
+  labs( #all the labels
     y="Number of crimes", 
     x="Date", 
     title="Crimes by Date and District in March")
